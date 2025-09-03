@@ -7,34 +7,34 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <meta name="theme-color" content="#38bdf8" />
+  <style>
+    :root{
+      --bg:#e6f7fb; --card:#ffffff; --text:#083344; --muted:#5f9ea0;
+      --accent:#38bdf8; --accent2:#34d399; --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);}
+    header{text-align:center;padding:30px 20px 10px;} /* ↓底部缩小 */
+    header h1{margin:0;font-size:32px;line-height:1.2;}
+    header p{color:#5f9ea0;font-size:15px;margin:6px 0 0 0;}
+    .container{max-width:700px;margin:auto;padding:20px;}
+    .card{background:var(--card);padding:16px;border-radius:var(--radius);
+          box-shadow:0 4px 12px rgba(0,0,0,.1);margin:16px 0;}
+    button{padding:6px 12px;border:none;border-radius:8px;background:var(--accent);
+           color:#fff;cursor:pointer;margin:4px 4px 0 0;}
+    ul{padding-left:20px;}
+    footer{text-align:center;color:var(--muted);font-size:13px;margin:20px;}
+    #confetti{position:fixed;inset:0;pointer-events:none}
+  </style>
 </head>
 <body>
-<header style="padding:30px 20px 10px;text-align:center;">
-  <h1 style="margin:0;font-size:32px;line-height:1.2;">🌤️ Tiny Wins</h1>
-  <p style="color:#5f9ea0;font-size:15px;margin:6px 0 0 0;">
-    ✨ Let's celebrate the victories ✨
-  </p>
+<header>
+  <h1>🌤️ Tiny Wins</h1>
+  <p>✨ Let's celebrate the victories ✨</p>
 </header>
-:root{
-  --bg:#e6f7fb; --card:#ffffff; --text:#083344; --muted:#5f9ea0;
-  --accent:#38bdf8; --accent2:#34d399; --radius:14px;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);}
-header{padding:20px;text-align:center;}
-h1{margin:0;font-size:24px;}
-.container{max-width:700px;margin:auto;padding:20px;}
-.card{background:var(--card);padding:16px;border-radius:var(--radius);
-      box-shadow:0 4px 12px rgba(0,0,0,.1);margin:16px 0;}
-button{padding:6px 12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;margin:4px 4px 0 0;}
-ul{padding-left:20px;}
-footer{text-align:center;color:var(--muted);font-size:13px;margin:20px;}
-#health{position:fixed;top:8px;right:8px;font-size:12px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #cde4e7;color:#083344;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-#confetti{position:fixed;inset:0;pointer-events:none}
-</style>
-<body>
-<div id="health">🔴 JS 未加载</div>
+
 <div class="container">
+
   <div class="card">
     <h3>✅ 今日三件小事</h3>
     <ul id="tasks"></ul>
@@ -70,139 +70,82 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin:20px;}
 
 <script>
 (function(){
-  // 健康指示
-  const health = document.getElementById('health');
-  const ok = (msg)=>{ health.textContent = '🟢 ' + msg; };
-  const fail = (msg)=>{ health.textContent = '🔴 ' + msg; };
+  const elTasks=document.getElementById('tasks');
+  const elMood=document.getElementById('mood');
+  const elMoodVal=document.getElementById('moodVal');
+  const elGrat=document.getElementById('gratitude');
+  const elStats=document.getElementById('stats');
 
-  try {
-    console.log('[TW] JS loaded');
-    ok('JS OK');
+  document.getElementById('btnAdd').addEventListener('click', addTask);
+  document.getElementById('btnClear').addEventListener('click', clearTasks);
+  document.getElementById('btnMoodReset').addEventListener('click', resetMood);
+  document.getElementById('btnGReset').addEventListener('click', resetGratitude);
+  document.getElementById('btnExport').addEventListener('click', exportData);
 
-    // 元素
-    const elTasks = document.getElementById('tasks');
-    const elMood = document.getElementById('mood');
-    const elMoodVal = document.getElementById('moodVal');
-    const elGrat = document.getElementById('gratitude');
-    const elStats = document.getElementById('stats');
+  elMood.addEventListener('input', function(){ updateMoodEmoji(this.value); saveData(); });
+  elGrat.addEventListener('input', saveData);
 
-    // 绑定按钮 (避免 inline onclick 贴错)
-    document.getElementById('btnAdd').addEventListener('click', addTask);
-    document.getElementById('btnClear').addEventListener('click', clearTasks);
-    document.getElementById('btnMoodReset').addEventListener('click', resetMood);
-    document.getElementById('btnGReset').addEventListener('click', resetGratitude);
-    document.getElementById('btnExport').addEventListener('click', exportData);
-
-    // 事件
-    elMood.addEventListener('input', function(){ updateMoodEmoji(this.value); saveData(); });
-    elGrat.addEventListener('input', saveData);
-
-    /* ---------- 本地存储 ---------- */
-    function saveData(){
-      const data = {
-        tasks: Array.from(elTasks.querySelectorAll('li')).map(li=>li.textContent),
-        mood: elMood.value,
-        gratitude: elGrat.value,
-        last: new Date().toISOString().slice(0,10),
-        days: (JSON.parse(localStorage.getItem('tinywins'))?.days || 0)
-      };
-      const old = JSON.parse(localStorage.getItem('tinywins')||'{}');
-      if(old.last !== data.last){ data.days += 1; }
-      localStorage.setItem('tinywins', JSON.stringify(data));
-      updateStats();
-      console.log('[TW] saved', data);
-    }
-
-    function loadData(){
-      const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
-      console.log('[TW] loaded', data);
-      if(data.tasks){
-        data.tasks.forEach(t=>{
-          const li=document.createElement('li'); li.textContent=t; elTasks.appendChild(li);
-        });
-      }
-      if(data.mood){ elMood.value=data.mood; updateMoodEmoji(data.mood); }
-      if(data.gratitude){ elGrat.value=data.gratitude; }
-      updateStats();
-    }
-
-    function updateStats(){
-      const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
-      if(data.days){
-        elStats.textContent = `📊 已累计记录 ${data.days} 天 · 最近一次 ${data.last||"-"}`;
-      }else{
-        elStats.textContent = "📊 还没有开始记录，加油！";
-      }
-    }
-
-    /* ---------- 任务 ---------- */
-    function addTask(){
-      const text = prompt("输入一个小任务：");
-      if(text){
-        const li=document.createElement('li'); li.textContent=text; elTasks.appendChild(li);
-        saveData(); checkTasks();
-      }
-    }
-    function clearTasks(){ elTasks.innerHTML = ""; saveData(); }
-    function checkTasks(){ if(elTasks.querySelectorAll('li').length>=3){ launchConfetti(); } }
-
-    /* ---------- 心情 ---------- */
-    function resetMood(){ elMood.value = 50; updateMoodEmoji(50); saveData(); }
-    function updateMoodEmoji(v){
-      let e="🙂"; if(v>80) e="😎"; else if(v<30) e="🌧️";
-      elMoodVal.textContent=e;
-    }
-
-    /* ---------- 感恩 ---------- */
-    function resetGratitude(){ elGrat.value=""; saveData(); }
-
-    /* ---------- 导出 ---------- */
-    function exportData(){
-      const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
-      let txt = `🌤️ 失业但坚强 · Tiny Wins\n日期: ${new Date().toLocaleDateString()}\n\n`;
-      txt += "✅ 今日小事:\n" + (data.tasks||[]).map((t,i)=>`${i+1}. ${t}`).join("\n") + "\n\n";
-      txt += `🌈 心情指数: ${data.mood||"-"}\n\n`;
-      txt += `💌 感恩: \n${data.gratitude||"-"}\n\n`;
-      txt += `📊 已累计记录 ${data.days||0} 天\n`;
-      const blob = new Blob([txt], {type:"text/plain"});
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "tinywins.txt";
-      a.click();
-      console.log('[TW] exported');
-    }
-
-    /* ---------- 彩带特效 ---------- */
-    const confetti=document.getElementById("confetti"),ctx=confetti.getContext("2d");
-    function resize(){ confetti.width=innerWidth; confetti.height=innerHeight; }
-    addEventListener('resize', resize); resize();
-
-    function launchConfetti(){
-      let pieces=[];
-      for(let i=0;i<150;i++){
-        pieces.push({
-          x:Math.random()*confetti.width,
-          y:-Math.random()*confetti.height,
-          w:10,h:10,
-          color:`hsl(${Math.random()*360},100%,50%)`,
-          speed:Math.random()*3+2
-        });
-      }
-      (function tick(){
-        ctx.clearRect(0,0,confetti.width,confetti.height);
-        pieces.forEach(p=>{ p.y+=p.speed; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.w,p.h); });
-        pieces=pieces.filter(p=>p.y<confetti.height);
-        if(pieces.length) requestAnimationFrame(tick);
-      })();
-    }
-
-    // 初始化
-    loadData();
-    ok('JS OK');
-  } catch (e){
-    console.error('[TW] error', e);
-    fail('JS 报错，打开控制台查看');
+  function saveData(){
+    const data = {
+      tasks: Array.from(elTasks.querySelectorAll('li')).map(li=>li.textContent),
+      mood: elMood.value,
+      gratitude: elGrat.value,
+      last: new Date().toISOString().slice(0,10),
+      days: (JSON.parse(localStorage.getItem('tinywins'))?.days || 0)
+    };
+    const old = JSON.parse(localStorage.getItem('tinywins')||'{}');
+    if(old.last !== data.last){ data.days += 1; }
+    localStorage.setItem('tinywins', JSON.stringify(data));
+    updateStats();
   }
+
+  function loadData(){
+    const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
+    if(data.tasks){ data.tasks.forEach(t=>{ const li=document.createElement('li'); li.textContent=t; elTasks.appendChild(li); }); }
+    if(data.mood){ elMood.value=data.mood; updateMoodEmoji(data.mood); }
+    if(data.gratitude){ elGrat.value=data.gratitude; }
+    updateStats();
+  }
+
+  function updateStats(){
+    const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
+    if(data.days){ elStats.textContent=`📊 已累计记录 ${data.days} 天 · 最近一次 ${data.last||"-"}`; }
+    else{ elStats.textContent="📊 还没有开始记录，加油！"; }
+  }
+
+  function addTask(){
+    const text = prompt("输入一个小任务：");
+    if(text){ const li=document.createElement('li'); li.textContent=text; elTasks.appendChild(li); saveData(); checkTasks(); }
+  }
+  function clearTasks(){ elTasks.innerHTML=""; saveData(); }
+  function checkTasks(){ if(elTasks.querySelectorAll('li').length>=3){ launchConfetti(); } }
+
+  function resetMood(){ elMood.value=50; updateMoodEmoji(50); saveData(); }
+  function updateMoodEmoji(v){ let e="🙂"; if(v>80)e="😎"; else if(v<30)e="🌧️"; elMoodVal.textContent=e; }
+
+  function resetGratitude(){ elGrat.value=""; saveData(); }
+
+  function exportData(){
+    const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
+    let txt=`🌤️ Tiny Wins\n日期: ${new Date().toLocaleDateString()}\n\n`;
+    txt+="✅ 今日小事:\n"+(data.tasks||[]).map((t,i)=>`${i+1}. ${t}`).join("\n")+"\n\n";
+    txt+=`🌈 心情指数: ${data.mood||"-"}\n\n`;
+    txt+=`💌 感恩:\n${data.gratitude||"-"}\n\n`;
+    txt+=`📊 已累计记录 ${data.days||0} 天\n`;
+    const blob=new Blob([txt],{type:"text/plain"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="tinywins.txt"; a.click();
+  }
+
+  const confetti=document.getElementById("confetti"),ctx=confetti.getContext("2d");
+  function resize(){ confetti.width=innerWidth; confetti.height=innerHeight; }
+  addEventListener('resize', resize); resize();
+
+  function launchConfetti(){
+    let pieces=[]; for(let i=0;i<150;i++){ pieces.push({x:Math.random()*confetti.width,y:-Math.random()*confetti.height,w:10,h:10,color:`hsl(${Math.random()*360},100%,50%)`,speed:Math.random()*3+2}); }
+    (function tick(){ ctx.clearRect(0,0,confetti.width,confetti.height); pieces.forEach(p=>{ p.y+=p.speed; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.w,p.h); }); pieces=pieces.filter(p=>p.y<confetti.height); if(pieces.length) requestAnimationFrame(tick); })();
+  }
+
+  loadData();
 })();
 </script>
 </body>
