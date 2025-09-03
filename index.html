@@ -2,448 +2,123 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>失业但坚强 · Tiny Wins</title>
 <style>
-  :root{
-    --bg:#0e0f12;--card:#16181d;--text:#e6e6ea;--muted:#a8acb9;
-    --accent:#7dd3fc;--accent2:#c4b5fd;--good:#86efac;--warn:#fca5a5;
-    --line:#262a33;--shadow:0 6px 20px rgba(0,0,0,.25);--radius:14px;
-  }
-  body{margin:0;background:radial-gradient(1200px 1200px at 80% -10%, #1a1f28 0%, var(--bg) 50%);
-       color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-       letter-spacing:.1px;}
-  *{box-sizing:border-box}
-  header{padding:28px 20px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
-  .title .chip{font-size:12px;color:#0b1220;background:linear-gradient(135deg,var(--accent),var(--accent2));
-               padding:4px 10px;border-radius:999px}
-  .sub{color:var(--muted);font-size:13px}
-  .container{max-width:1100px;margin:0 auto;padding:10px 20px 80px;display:grid;
-             grid-template-columns:repeat(12,1fr);gap:16px}
-  .card{grid-column:span 12;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-        box-shadow:var(--shadow);padding:16px}
-  @media(min-width:860px){
-    .card.span6{grid-column:span 6}
-    .card.span4{grid-column:span 4}
-  }
-  .card h3{margin:0 0 10px;font-size:16px}
-  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  input[type="text"]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
-                     background:#0f1116;color:var(--text);outline:none}
-  textarea{width:100%;min-height:86px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
-           background:#0f1116;color:var(--text);resize:vertical;outline:none}
-  .btn{appearance:none;border:1px solid var(--line);background:#10131a;color:var(--text);padding:10px 12px;
-       border-radius:12px;cursor:pointer;transition:.2s;user-select:none}
-  .btn:hover{transform:translateY(-1px);border-color:#3a3f4d}
-  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0b1220;border:none}
-  .btn.ghost{background:transparent}
-  .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px 10px;border-radius:999px}
-  .checkline{display:flex;align-items:center;gap:10px}
-  .checkline input[type="checkbox"]{width:18px;height:18px}
-  .muted{color:var(--muted);font-size:12px}
-  .bar{height:10px;background:#0f1116;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .split{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
-  .badge{font-size:12px;color:#0b1220;background:linear-gradient(135deg,#34d399,#22d3ee);padding:3px 8px;border-radius:999px}
-  .stat{font-size:28px;font-weight:800}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-  .habit{display:flex;justify-content:space-between;align-items:center;border:1px dashed #2a3040;border-radius:12px;
-         padding:10px}
-  .habit .streak{font-size:12px;color:var(--muted)}
-  .right{margin-left:auto}
-  footer{position:fixed;bottom:12px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
-  footer .dock{pointer-events:auto;background:rgba(17,19,26,.7);backdrop-filter:blur(10px);
-               border:1px solid var(--line);border-radius:999px;padding:8px;display:flex;gap:8px}
-  canvas#confetti{position:fixed;inset:0;pointer-events:none}
-  .mini{font-size:12px}
-  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
+:root{
+  --bg:#e6f7fb;
+  --card:#ffffff;
+  --text:#083344;
+  --muted:#5f9ea0;
+  --accent:#38bdf8;
+  --accent2:#34d399;
+  --radius:14px;
+}
+body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);}
+header{padding:20px;text-align:center;}
+h1{margin:0;font-size:24px;}
+.container{max-width:700px;margin:auto;padding:20px;}
+.card{background:var(--card);padding:16px;border-radius:var(--radius);
+      box-shadow:0 4px 12px rgba(0,0,0,.1);margin:16px 0;}
+button{padding:6px 12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;margin:4px 4px 0 0;}
+ul{padding-left:20px;}
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
 <header>
-  <div class="title">🌤️ 失业但坚强 · Tiny Wins <span class="chip">本地保存</span></div>
-  <div class="sub" id="today"></div>
+  <h1>🌤️ 失业但坚强 · Tiny Wins</h1>
+  <p>蓝绿色治愈风 · 本地保存版</p>
 </header>
 
 <div class="container">
-  <!-- 今日三件小事 -->
-  <section class="card span6" id="tasks">
-    <h3>✅ 今日三件小事 <span class="badge" id="taskBadge">0/3</span></h3>
-    <div class="bar" aria-label="progress"><span id="taskProgress" style="width:0%"></span></div>
-    <div style="height:8px"></div>
-    <div id="taskList"></div>
-    <div class="row" style="margin-top:10px">
-      <button class="btn" id="addTask">➕ 再来一件</button>
-      <button class="btn ghost" id="resetTasks">🧹 清空今天</button>
-      <span class="muted">完成 3/3 会掉彩带～</span>
-    </div>
-  </section>
 
-  <!-- 情绪天气 -->
-  <section class="card span6" id="mood">
-    <h3>🌈 情绪天气（0~100） <span class="badge" id="moodEmoji">🙂</span></h3>
-    <div class="split">
-      <input type="range" min="0" max="100" step="1" id="moodRange" />
-      <button class="btn" id="saveMood">📌 记录</button>
-    </div>
-    <div class="row" style="justify-content:space-between;margin-top:8px">
-      <span class="muted">最近两周曲线</span>
-      <span class="muted mini">平均 <span id="moodAvg">-</span></span>
-    </div>
-    <canvas id="spark" height="60" style="width:100%;border-radius:10px;border:1px solid var(--line);background:#0f1116"></canvas>
-  </section>
+  <div class="card">
+    <h3>✅ 今日三件小事</h3>
+    <ul id="tasks"></ul>
+    <button onclick="addTask()">添加任务</button>
+    <button onclick="clearTasks()">清空任务</button>
+  </div>
 
-  <!-- 感恩三件事 -->
-  <section class="card span6" id="gratitude">
+  <div class="card">
+    <h3>🌈 情绪天气</h3>
+    <input type="range" min="0" max="100" value="50" id="mood">
+    <span id="moodVal">🙂</span>
+    <button onclick="resetMood()">重置心情</button>
+  </div>
+
+  <div class="card">
     <h3>💌 感恩三件事</h3>
-    <textarea id="gratitudeText" placeholder="例：1）今天按时吃饭  2）朋友的关心  3）自己没有放弃"></textarea>
-    <div class="row" style="margin-top:8px">
-      <button class="btn" id="saveGratitude">保存</button>
-      <button class="btn ghost" id="promptG">换一个提示</button>
-      <span class="muted">写下微小的光，会被记住。</span>
-    </div>
-    <div class="muted mini" id="gHint" style="margin-top:6px"></div>
-  </section>
+    <textarea id="gratitude" style="width:100%;height:80px;"></textarea><br>
+    <button onclick="resetGratitude()">清空感恩</button>
+  </div>
 
-  <!-- 微习惯打卡 -->
-  <section class="card span6" id="habits">
-    <h3>🥤 微习惯打卡</h3>
-    <div class="grid" id="habitGrid"></div>
-    <div class="row" style="margin-top:10px">
-      <button class="btn" id="addHabit">➕ 自定义习惯</button>
-      <button class="btn ghost" id="resetHabitsToday">🔄 重置今日</button>
-      <span class="muted">连续打卡自动计连续天数。</span>
-    </div>
-  </section>
-
-  <!-- 预算小计算器 -->
-  <section class="card span4" id="budget">
-    <h3>💸 日花建议</h3>
-    <div class="row">
-      <input type="text" id="cash" placeholder="当前余额（元）">
-      <input type="text" id="days" placeholder="想撑天数（天）">
-    </div>
-    <div class="row" style="margin-top:10px">
-      <button class="btn" id="calc">计算</button>
-      <div class="right stat mono" id="perday">--/天</div>
-    </div>
-    <div class="muted mini" style="margin-top:6px">Tip：先保底（房租/餐饮/交通）再留弹性预算。</div>
-  </section>
-
-  <!-- 随机挑战 & 打气 -->
-  <section class="card span4" id="pep">
-    <h3>⚡ 随机挑战 / 打气</h3>
-    <div class="row" style="margin-bottom:8px">
-      <button class="btn primary" id="randomChallenge">🎲 来个小挑战</button>
-      <button class="btn" id="randomQuote">🗣️ 来句狠话</button>
-      <button class="btn ghost" id="bless">🪄 K总保佑</button>
-    </div>
-    <div id="displayZone" class="muted" style="min-height:48px"></div>
-  </section>
-
-  <!-- 导出今日 -->
-  <section class="card span4" id="exporter">
-    <h3>📤 导出今天</h3>
-    <div class="row">
-      <button class="btn" id="exportTxt">导出 TXT</button>
-      <button class="btn ghost" id="darkToggle">🌙 夜间/日间</button>
-    </div>
-    <div class="muted mini" style="margin-top:6px">导出包含：任务完成情况、情绪指数、感恩条目、习惯打卡。</div>
-  </section>
 </div>
 
-<footer>
-  <div class="dock">
-    <button class="btn mini" id="seed">一键填充示例</button>
-    <span class="muted mini">Keep showing up. Tiny wins → huge momentum.</span>
-  </div>
-</footer>
-
 <script>
-(() => {
-  const $ = s=>document.querySelector(s);
-  const $$ = s=>document.querySelectorAll(s);
-  const store = (k,v)=>localStorage.setItem(k,JSON.stringify(v));
-  const load = (k,d)=>{ try{ const v=JSON.parse(localStorage.getItem(k)); return v??d }catch{ return d }};
-  const todayStr = ()=> new Date().toISOString().slice(0,10);
-  const ymd = todayStr();
-  $("#today").textContent = new Date().toLocaleString([], {hour12:false, year:'numeric', month:'long', day:'numeric', weekday:'short', hour:'2-digit', minute:'2-digit'});
+function saveData(){
+  const data = {
+    tasks: Array.from(document.querySelectorAll('#tasks li')).map(li=>li.textContent),
+    mood: document.getElementById('mood').value,
+    gratitude: document.getElementById('gratitude').value
+  };
+  localStorage.setItem('tinywins', JSON.stringify(data));
+}
 
-  /* --------- Confetti --------- */
-  const cf = $("#confetti"), ctx = cf.getContext('2d');
-  let W=cf.width=innerWidth, H=cf.height=innerHeight;
-  addEventListener('resize',()=>{W=cf.width=innerWidth;H=cf.height=innerHeight});
-  function boom() {
-    const n=160, P=[];
-    for(let i=0;i<n;i++){
-      P.push({
-        x:W/2, y:H/3, r:2+Math.random()*3,
-        vx:(Math.random()-0.5)*6, vy:(Math.random()*-6-2),
-        g:0.15+Math.random()*0.2, a:1, col=`hsl(${Math.random()*360},90%,60%)`
-      });
-    }
-    let t=0;
-    (function anim(){
-      t++;
-      ctx.clearRect(0,0,W,H);
-      P.forEach(p=>{
-        p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.a-=0.008;
-        ctx.globalAlpha=Math.max(p.a,0);
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill();
-      });
-      ctx.globalAlpha=1;
-      if(t<220) requestAnimationFrame(anim); else ctx.clearRect(0,0,W,H);
-    })();
-  }
-
-  /* --------- Tasks --------- */
-  const TASK_KEY = "xiaoP.tasks."+ymd;
-  const defaultTasks = ["喝水500ml","投递2份简历/更新简历1处","快走或拉伸10分钟"];
-  let tasks = load(TASK_KEY, defaultTasks.map(t=>({text:t,done:false})));
-  const taskList = $("#taskList");
-  function renderTasks(){
-    taskList.innerHTML="";
-    tasks.forEach((t,i)=>{
-      const row = document.createElement('div'); row.className='checkline';
-      row.innerHTML = `
-        <input type="checkbox" ${t.done?'checked':''} data-i="${i}"/>
-        <input type="text" value="${t.text.replace(/"/g,'&quot;')}" data-i="${i}" />
-        <button class="btn mini ghost" data-del="${i}">删</button>
-      `;
-      taskList.appendChild(row);
+function loadData(){
+  const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
+  if(data.tasks){
+    data.tasks.forEach(t=>{
+      const li=document.createElement('li'); li.textContent=t;
+      document.getElementById('tasks').appendChild(li);
     });
-    const done = tasks.filter(x=>x.done).length;
-    $("#taskBadge").textContent = `${done}/${tasks.length}`;
-    $("#taskProgress").style.width = `${(done/(tasks.length||1))*100}%`;
-    if(done>=3){ boom() }
-    store(TASK_KEY,tasks);
   }
-  taskList.addEventListener('change',e=>{
-    const i = +e.target.dataset.i;
-    if(e.target.type==='checkbox'){ tasks[i].done = e.target.checked; renderTasks(); }
-  });
-  taskList.addEventListener('input',e=>{
-    const i = +e.target.dataset.i;
-    if(e.target.type==='text'){ tasks[i].text = e.target.value; store(TASK_KEY,tasks); }
-  });
-  taskList.addEventListener('click',e=>{
-    const d = e.target.dataset.del;
-    if(d!=null){ tasks.splice(+d,1); renderTasks(); }
-  });
-  $("#addTask").onclick = ()=>{ tasks.push({text:"",done:false}); renderTasks(); };
-  $("#resetTasks").onclick = ()=>{ if(confirm("只清空今天的三件小事？")){ tasks = []; renderTasks(); } };
-  renderTasks();
-
-  /* --------- Mood --------- */
-  const MOOD_LOG_KEY = "xiaoP.moodLogs";
-  const moodRange=$("#moodRange"), moodEmoji=$("#moodEmoji"), saveMood=$("#saveMood");
-  const emoji = v => v>=80?"😎":v>=65?"🙂":v>=45?"😐":v>=25?"😕":"🌧️";
-  function moodToAvg(arr){ if(!arr.length) return 0; return Math.round(arr.reduce((a,b)=>a+b.v,0)/arr.length); }
-  function setEmoji(){ moodEmoji.textContent = emoji(+moodRange.value); }
-  setEmoji();
-  moodRange.oninput=setEmoji;
-  saveMood.onclick=()=>{
-    const logs = load(MOOD_LOG_KEY,[]);
-    const idx = logs.findIndex(d=>d.d===ymd);
-    const entry = {d:ymd,v:+moodRange.value};
-    if(idx>-1) logs[idx]=entry; else logs.push(entry);
-    store(MOOD_LOG_KEY,logs);
-    drawSpark();
-  };
-  function drawSpark(){
-    const logs = load(MOOD_LOG_KEY,[]).slice(-14);
-    const c=$("#spark"), g=c.getContext('2d');
-    c.width = c.clientWidth; c.height = c.height; // keep 60
-    g.clearRect(0,0,c.width,c.height);
-    if(!logs.length){ $("#moodAvg").textContent='-'; return }
-    $("#moodAvg").textContent = moodToAvg(logs);
-    const pad=8, w=c.width-2*pad, h=c.height-2*pad;
-    const ys = logs.map(x=>x.v);
-    const min=0, max=100, step=w/Math.max(1,(logs.length-1));
-    g.strokeStyle = "#293041"; g.lineWidth=1; g.beginPath();
-    for(let i=0;i<=5;i++){ let y=pad+i*(h/5); g.moveTo(pad,y); g.lineTo(pad+w,y); } g.stroke();
-    g.lineWidth=2; g.strokeStyle = "#7dd3fc"; g.beginPath();
-    logs.forEach((p,i)=>{
-      const x=pad+i*step;
-      const y=pad + (1-(p.v-min)/(max-min))*h;
-      if(i===0) g.moveTo(x,y); else g.lineTo(x,y);
-      // point
-      g.fillStyle="#c4b5fd"; g.beginPath(); g.arc(x,y,2.5,0,Math.PI*2); g.fill();
-    });
-    // last value badge
-    const last=logs[logs.length-1];
-    const lx=pad+(logs.length-1)*step, ly=pad+(1-(last.v-min)/(max-min))*h;
-    g.fillStyle="#86efac"; g.fillRect(lx-14,ly-18,28,16);
-    g.fillStyle="#0b1220"; g.font="12px system-ui"; g.textAlign="center"; g.textBaseline="middle";
-    g.fillText(last.v, lx, ly-10);
+  if(data.mood){
+    document.getElementById('mood').value=data.mood;
+    updateMoodEmoji(data.mood);
   }
-  drawSpark();
-
-  /* --------- Gratitude --------- */
-  const G_KEY="xiaoP.gratitude."+ymd, gText=$("#gratitudeText");
-  const hints=[
-    "今天让我松口气的一瞬间是？",
-    "谁的哪句话让我觉得被看见？",
-    "我做对了一件小事是什么？",
-    "今天的身体信号（睡眠/饮食/运动）里，哪个值得表扬？"
-  ];
-  const hint=()=>hints[Math.floor(Math.random()*hints.length)];
-  $("#gHint").textContent = "提示："+hint();
-  gText.value = load(G_KEY,"");
-  $("#saveGratitude").onclick = ()=>{ store(G_KEY,gText.value.trim()); boom(); };
-  $("#promptG").onclick = ()=>{ $("#gHint").textContent = "提示："+hint(); };
-
-  /* --------- Habits --------- */
-  const H_KEY="xiaoP.habits";
-  let habits = load(H_KEY, [
-    {name:"喝水 6 杯", streak:0, last:'' , today:false},
-    {name:"投递 ≥2 份简历", streak:0, last:'' , today:false},
-    {name:"运动 10 分钟", streak:0, last:'' , today:false},
-    {name:"阅读 20 页", streak:0, last:'' , today:false},
-    {name:"英语 15 分钟", streak:0, last:'' , today:false},
-  ]);
-  const grid=$("#habitGrid");
-  function diffDays(a,b){ return Math.round((new Date(a)-new Date(b))/86400000) }
-  function renderHabits(){
-    grid.innerHTML="";
-    habits.forEach((h,i)=>{
-      const el=document.createElement('div'); el.className='habit';
-      el.innerHTML=`
-        <span>${h.today?'✅':'⬜'} ${h.name}<br><span class="streak">连击：${h.streak} 天</span></span>
-        <div class="row">
-          <button class="btn mini" data-ok="${i}">${h.today?'已打卡':'打卡'}</button>
-          <button class="btn mini ghost" data-del="${i}">删</button>
-        </div>
-      `;
-      grid.appendChild(el);
-    });
-    store(H_KEY,habits);
+  if(data.gratitude){
+    document.getElementById('gratitude').value=data.gratitude;
   }
-  grid.addEventListener('click',e=>{
-    const iOk=e.target.dataset.ok, iDel=e.target.dataset.del;
-    if(iOk!=null){
-      const h=habits[+iOk];
-      if(h.today){ alert("今天已打卡"); return; }
-      if(h.last){
-        const d=diffDays(ymd, h.last);
-        if(d===1) h.streak+=1;
-        else if(d===0) {/*nop*/}
-        else h.streak=1;
-      }else h.streak=1;
-      h.last=ymd; h.today=true; boom();
-      renderHabits();
-    }
-    if(iDel!=null){ habits.splice(+iDel,1); renderHabits(); }
-  });
-  $("#addHabit").onclick=()=>{
-    const n=prompt("输入习惯名称（例如：冥想 5 分钟）");
-    if(n){ habits.push({name:n,streak:0,last:'',today:false}); renderHabits(); }
-  };
-  $("#resetHabitsToday").onclick=()=>{
-    habits = habits.map(h=>({ ...h, today:false }));
-    renderHabits();
-  };
-  // 跨天自动清 today
-  habits = habits.map(h => ({...h, today: h.last===ymd ? h.today : false }));
-  renderHabits();
+}
 
-  /* --------- Budget --------- */
-  $("#calc").onclick=()=>{
-    const cash=parseFloat($("#cash").value.replace(/[^\d.]/g,'')),
-          days=parseFloat($("#days").value.replace(/[^\d.]/g,''));
-    if(!cash || !days || days<=0){ $("#perday").textContent="--/天"; return }
-    const per=cash/days;
-    $("#perday").textContent = (Math.floor(per*100)/100).toFixed(2)+"/天";
-  };
-
-  /* --------- Randoms & Bless --------- */
-  const challenges=[
-    "今天 20 分钟信息减负：屏蔽 3 个无效信息源。",
-    "把简历上 1 个 bullet 升级为 STAR 叙述（30 分钟封顶）。",
-    "给自己做一顿高蛋白晚餐。",
-    "把房间一个角落收纳到 80 分（计时 15 分钟）。",
-    "联系 1 位老同学/前同事，聊近况与机会（不求投简历，只建立弱关系）。",
-    "步行 3000 步听播客。"
-  ];
-  const quotes=[
-    "你不是失败，你是在加载进度条。— Gen Z 版自勉",
-    "今天做对 1 件小事 > 明天想对 100 件。",
-    "别内耗，去做事。情绪听指挥，行动给答案。",
-    "世界很吵，你要很稳。— K 总",
-    "就业市场很卷，但你有自己的路数与节奏。"
-  ];
-  $("#randomChallenge").onclick=()=>{ $("#displayZone").textContent="⚡ "+challenges[Math.floor(Math.random()*challenges.length)] };
-  $("#randomQuote").onclick=()=>{ $("#displayZone").textContent="🗣️ "+quotes[Math.floor(Math.random()*quotes.length)] };
-  $("#bless").onclick=()=>{ boom(); tone(); };
-
-  // 简易音色
-  function tone(){
-    const actx=new (window.AudioContext||window.webkitAudioContext)();
-    const o=actx.createOscillator(), g=actx.createGain();
-    o.type="triangle"; o.frequency.value=660;
-    o.connect(g); g.connect(actx.destination);
-    g.gain.setValueAtTime(0.0001, actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.2, actx.currentTime+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime+0.25);
-    o.start(); o.stop(actx.currentTime+0.26);
+function addTask(){
+  const text = prompt("输入一个小任务：");
+  if(text){
+    const li=document.createElement('li'); li.textContent=text;
+    document.getElementById('tasks').appendChild(li);
+    saveData();
   }
+}
 
-  /* --------- Export --------- */
-  $("#exportTxt").onclick=()=>{
-    const logs = load(MOOD_LOG_KEY,[]);
-    const mood = logs.find(x=>x.d===ymd)?.v ?? "-";
-    const done = tasks.filter(t=>t.done).length;
-    const lines = [
-      `【日期】${ymd}`,
-      `【情绪】${mood}/100`,
-      `【三件小事】完成 ${done}/${tasks.length}`,
-      ...tasks.map((t,i)=>`  - [${t.done?'x':' '}] ${i+1}. ${t.text}`),
-      `【感恩】`,
-      (gText.value||"(空)").split("\n").map(s=>`  - ${s.trim()}`).join("\n"),
-      `【习惯打卡】`,
-      ...habits.map(h=>`  - ${h.name} | 今日：${h.today?'✅':'⬜'} | 连击：${h.streak} 天`)
-    ].flat().join("\n");
-    const file = new Blob([lines],{type:'text/plain;charset=utf-8'});
-    const url = URL.createObjectURL(file);
-    const a=document.createElement('a'); a.href=url; a.download=`TinyWins_${ymd}.txt`;
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  };
+function clearTasks(){
+  document.getElementById('tasks').innerHTML = "";
+  saveData();
+}
 
-  /* --------- Dark/Light --------- */
-  let light=false;
-  $("#darkToggle").onclick=()=>{
-    light=!light;
-    if(light){
-      document.documentElement.style.setProperty('--bg','#f6f7fb');
-      document.documentElement.style.setProperty('--card','#ffffff');
-      document.documentElement.style.setProperty('--text','#0e1220');
-      document.documentElement.style.setProperty('--muted','#5f667a');
-      document.documentElement.style.setProperty('--line','#e7e9f0');
-    }else{
-      document.documentElement.style.setProperty('--bg','#0e0f12');
-      document.documentElement.style.setProperty('--card','#16181d');
-      document.documentElement.style.setProperty('--text','#e6e6ea');
-      document.documentElement.style.setProperty('--muted','#a8acb9');
-      document.documentElement.style.setProperty('--line','#262a33');
-    }
-  };
+function resetMood(){
+  document.getElementById('mood').value = 50;
+  updateMoodEmoji(50);
+  saveData();
+}
 
-  /* --------- Seed Demo --------- */
-  $("#seed").onclick=()=>{
-    tasks = [
-      {text:"更新简历项目亮点 1 条",done:true},
-      {text:"完成 15 分钟拉伸",done:false},
-      {text:"投递 2 份 JD",done:false},
-    ];
-    renderTasks();
-    $("#gratitudeText").value="1）谢谢自己还在努力\n2）今天喝到了好喝的咖啡\n3）朋友的转发与打气";
-    store(G_KEY,$("#gratitudeText").value);
-    $("#moodRange").value=68; setEmoji(); saveMood.click();
-    $("#displayZone").textContent="⚡ 练习 10 分钟自我介绍并录音回放。";
-  };
-})();
+function resetGratitude(){
+  document.getElementById('gratitude').value = "";
+  saveData();
+}
+
+function updateMoodEmoji(v){
+  let e="🙂"; if(v>80) e="😎"; else if(v<30) e="🌧️";
+  document.getElementById('moodVal').textContent=e;
+}
+
+document.getElementById('mood').oninput=function(){
+  updateMoodEmoji(this.value);
+  saveData();
+};
+document.getElementById('gratitude').oninput=saveData;
+
+// 初始加载
+loadData();
 </script>
 </body>
 </html>
