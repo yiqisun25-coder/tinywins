@@ -1,152 +1,673 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Tiny Wins</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
-  <meta name="theme-color" content="#38bdf8" />
-  <style>
-    :root{
-      --bg:#e6f7fb; --card:#ffffff; --text:#083344; --muted:#5f9ea0;
-      --accent:#38bdf8; --accent2:#34d399; --radius:14px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);}
-    header{text-align:center;padding:30px 20px 10px;} /* ↓底部缩小 */
-    header h1{margin:0;font-size:32px;line-height:1.2;}
-    header p{color:#5f9ea0;font-size:15px;margin:6px 0 0 0;}
-    .container{max-width:700px;margin:auto;padding:20px;}
-    .card{background:var(--card);padding:16px;border-radius:var(--radius);
-          box-shadow:0 4px 12px rgba(0,0,0,.1);margin:16px 0;}
-    button{padding:6px 12px;border:none;border-radius:8px;background:var(--accent);
-           color:#fff;cursor:pointer;margin:4px 4px 0 0;}
-    ul{padding-left:20px;}
-    footer{text-align:center;color:var(--muted);font-size:13px;margin:20px;}
-    #confetti{position:fixed;inset:0;pointer-events:none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiny Wins - 个人网站</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4ECDC4">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #E8F8F5 0%, #D5F2EA 50%, #C3E9DD 100%);
+            min-height: 100vh;
+            color: #2C5530;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(76, 205, 196, 0.1);
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(76, 205, 196, 0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #2C5530;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #4ECDC4;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: rgba(255, 255, 255, 0.6);
+            color: #2C5530;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .tab-button.active {
+            background: #4ECDC4;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 205, 196, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(76, 205, 196, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2C5530;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(76, 205, 196, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #4ECDC4;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 205, 196, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(76, 205, 196, 0.1);
+            color: #2C5530;
+        }
+
+        .btn-danger {
+            background: #FF6B6B;
+            color: white;
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border-left: 4px solid #4ECDC4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+
+        .item:hover {
+            transform: translateX(5px);
+        }
+
+        .item.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .mood-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .mood-btn {
+            font-size: 2rem;
+            padding: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .mood-btn:hover, .mood-btn.selected {
+            transform: scale(1.2);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #4ECDC4;
+            animation: confetti 3s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotateZ(720deg); opacity: 0; }
+        }
+
+        .export-section {
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            h1 { font-size: 2rem; }
+            .nav-tabs { justify-content: stretch; }
+            .tab-button { flex: 1; }
+        }
+    </style>
 </head>
 <body>
-<header>
-  <h1>🌤️ Tiny Wins</h1>
-  <p>✨ Let's celebrate the victories ✨</p>
-</header>
+    <div class="container">
+        <div class="header">
+            <div class="profile-image">🌟</div>
+            <h1>Tiny Wins</h1>
+            <p class="tagline">✨ Celebrate tiny victories ✨</p>
+        </div>
 
-<div class="container">
+        <div class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('tasks')">📝 任务清单</button>
+            <button class="tab-button" onclick="showTab('mood')">😊 心情记录</button>
+            <button class="tab-button" onclick="showTab('gratitude')">🙏 感恩日记</button>
+            <button class="tab-button" onclick="showTab('stats')">📊 统计数据</button>
+            <button class="tab-button" onclick="showTab('export')">📤 导出数据</button>
+        </div>
 
-  <div class="card">
-    <h3>✅ 今日三件小事</h3>
-    <ul id="tasks"></ul>
-    <button id="btnAdd">添加任务</button>
-    <button id="btnClear">清空任务</button>
-  </div>
+        <!-- 任务清单 -->
+        <div id="tasks" class="tab-content active">
+            <div class="section">
+                <h3>添加新任务</h3>
+                <div class="input-group">
+                    <input type="text" id="taskInput" placeholder="今天要完成什么？">
+                    <button class="btn btn-primary" onclick="addTask()">添加任务</button>
+                </div>
+                <div id="taskList"></div>
+            </div>
+        </div>
 
-  <div class="card">
-    <h3>🌈 情绪天气</h3>
-    <input type="range" min="0" max="100" value="50" id="mood">
-    <span id="moodVal">🙂</span>
-    <button id="btnMoodReset">重置心情</button>
-  </div>
+        <!-- 心情记录 -->
+        <div id="mood" class="tab-content">
+            <div class="section">
+                <h3>今天心情如何？</h3>
+                <div class="mood-selector">
+                    <button class="mood-btn" onclick="selectMood('😄')">😄</button>
+                    <button class="mood-btn" onclick="selectMood('😊')">😊</button>
+                    <button class="mood-btn" onclick="selectMood('😐')">😐</button>
+                    <button class="mood-btn" onclick="selectMood('😔')">😔</button>
+                    <button class="mood-btn" onclick="selectMood('😢')">😢</button>
+                </div>
+                <div class="input-group">
+                    <textarea id="moodNote" rows="3" placeholder="想说点什么吗？"></textarea>
+                    <button class="btn btn-primary" onclick="addMoodRecord()">记录心情</button>
+                </div>
+                <div id="moodList"></div>
+            </div>
+        </div>
 
-  <div class="card">
-    <h3>💌 感恩三件事</h3>
-    <textarea id="gratitude" style="width:100%;height:80px;"></textarea><br>
-    <button id="btnGReset">清空感恩</button>
-  </div>
+        <!-- 感恩日记 -->
+        <div id="gratitude" class="tab-content">
+            <div class="section">
+                <h3>今天感恩什么？</h3>
+                <div class="input-group">
+                    <textarea id="gratitudeInput" rows="3" placeholder="记录今天值得感恩的事情..."></textarea>
+                    <button class="btn btn-primary" onclick="addGratitude()">添加感恩</button>
+                </div>
+                <div id="gratitudeList"></div>
+            </div>
+        </div>
 
-  <div class="card">
-    <h3>📤 导出记录</h3>
-    <button id="btnExport">导出 TXT</button>
-  </div>
+        <!-- 统计数据 -->
+        <div id="stats" class="tab-content">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div>完成任务</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMoods">0</div>
+                    <div>心情记录</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalGratitudes">0</div>
+                    <div>感恩记录</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeDays">0</div>
+                    <div>活跃天数</div>
+                </div>
+            </div>
+            <div class="section">
+                <h3>最近活动</h3>
+                <div id="recentActivity"></div>
+            </div>
+        </div>
 
-</div>
+        <!-- 导出数据 -->
+        <div id="export" class="tab-content">
+            <div class="section export-section">
+                <h3>数据管理</h3>
+                <p>导出你的所有记录，或者重置数据重新开始</p>
+                <br>
+                <button class="btn btn-primary" onclick="exportData()">📤 导出为 TXT</button>
+                <button class="btn btn-secondary" onclick="exportJSON()">💾 导出为 JSON</button>
+                <button class="btn btn-danger" onclick="resetData()">🧹 重置所有数据</button>
+            </div>
+        </div>
+    </div>
 
-<footer>
-  <p id="stats">加载中...</p>
-</footer>
+    <script>
+        // 数据存储（为 GitHub 版本使用 localStorage）
+        let appData = {
+            tasks: [],
+            moods: [],
+            gratitudes: [],
+            completedTasks: 0
+        };
 
-<canvas id="confetti"></canvas>
+        // 从本地存储加载数据
+        function loadData() {
+            const saved = localStorage.getItem('tinyWinsData');
+            if (saved) {
+                appData = JSON.parse(saved);
+            }
+        }
 
-<script>
-(function(){
-  const elTasks=document.getElementById('tasks');
-  const elMood=document.getElementById('mood');
-  const elMoodVal=document.getElementById('moodVal');
-  const elGrat=document.getElementById('gratitude');
-  const elStats=document.getElementById('stats');
+        // 保存数据到本地存储
+        function saveData() {
+            localStorage.setItem('tinyWinsData', JSON.stringify(appData));
+        }
 
-  document.getElementById('btnAdd').addEventListener('click', addTask);
-  document.getElementById('btnClear').addEventListener('click', clearTasks);
-  document.getElementById('btnMoodReset').addEventListener('click', resetMood);
-  document.getElementById('btnGReset').addEventListener('click', resetGratitude);
-  document.getElementById('btnExport').addEventListener('click', exportData);
+        let selectedMood = '';
 
-  elMood.addEventListener('input', function(){ updateMoodEmoji(this.value); saveData(); });
-  elGrat.addEventListener('input', saveData);
+        // 标签页切换
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabName === 'stats') {
+                updateStats();
+            }
+        }
 
-  function saveData(){
-    const data = {
-      tasks: Array.from(elTasks.querySelectorAll('li')).map(li=>li.textContent),
-      mood: elMood.value,
-      gratitude: elGrat.value,
-      last: new Date().toISOString().slice(0,10),
-      days: (JSON.parse(localStorage.getItem('tinywins'))?.days || 0)
-    };
-    const old = JSON.parse(localStorage.getItem('tinywins')||'{}');
-    if(old.last !== data.last){ data.days += 1; }
-    localStorage.setItem('tinywins', JSON.stringify(data));
-    updateStats();
-  }
+        // 任务管理
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const task = input.value.trim();
+            if (task) {
+                const taskObj = {
+                    id: Date.now(),
+                    text: task,
+                    completed: false,
+                    date: new Date().toLocaleDateString()
+                };
+                appData.tasks.push(taskObj);
+                input.value = '';
+                saveData();
+                renderTasks();
+            }
+        }
 
-  function loadData(){
-    const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
-    if(data.tasks){ data.tasks.forEach(t=>{ const li=document.createElement('li'); li.textContent=t; elTasks.appendChild(li); }); }
-    if(data.mood){ elMood.value=data.mood; updateMoodEmoji(data.mood); }
-    if(data.gratitude){ elGrat.value=data.gratitude; }
-    updateStats();
-  }
+        function toggleTask(id) {
+            const task = appData.tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                if (task.completed) {
+                    appData.completedTasks++;
+                    createConfetti();
+                }
+                saveData();
+                renderTasks();
+            }
+        }
 
-  function updateStats(){
-    const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
-    if(data.days){ elStats.textContent=`📊 已累计记录 ${data.days} 天 · 最近一次 ${data.last||"-"}`; }
-    else{ elStats.textContent="📊 还没有开始记录，加油！"; }
-  }
+        function deleteTask(id) {
+            appData.tasks = appData.tasks.filter(t => t.id !== id);
+            saveData();
+            renderTasks();
+        }
 
-  function addTask(){
-    const text = prompt("输入一个小任务：");
-    if(text){ const li=document.createElement('li'); li.textContent=text; elTasks.appendChild(li); saveData(); checkTasks(); }
-  }
-  function clearTasks(){ elTasks.innerHTML=""; saveData(); }
-  function checkTasks(){ if(elTasks.querySelectorAll('li').length>=3){ launchConfetti(); } }
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            
+            appData.tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = `item ${task.completed ? 'completed' : ''}`;
+                taskElement.innerHTML = `
+                    <div>
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} 
+                               onchange="toggleTask(${task.id})">
+                        <span style="margin-left: 10px">${task.text}</span>
+                        <small style="color: #666; margin-left: 10px">${task.date}</small>
+                    </div>
+                    <button class="btn btn-danger" onclick="deleteTask(${task.id})">删除</button>
+                `;
+                taskList.appendChild(taskElement);
+            });
+        }
 
-  function resetMood(){ elMood.value=50; updateMoodEmoji(50); saveData(); }
-  function updateMoodEmoji(v){ let e="🙂"; if(v>80)e="😎"; else if(v<30)e="🌧️"; elMoodVal.textContent=e; }
+        // 心情记录
+        function selectMood(mood) {
+            selectedMood = mood;
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
 
-  function resetGratitude(){ elGrat.value=""; saveData(); }
+        function addMoodRecord() {
+            const note = document.getElementById('moodNote').value.trim();
+            if (selectedMood) {
+                const moodObj = {
+                    id: Date.now(),
+                    mood: selectedMood,
+                    note: note,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                };
+                appData.moods.push(moodObj);
+                document.getElementById('moodNote').value = '';
+                selectedMood = '';
+                document.querySelectorAll('.mood-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                saveData();
+                renderMoods();
+            } else {
+                alert('请先选择心情！');
+            }
+        }
 
-  function exportData(){
-    const data = JSON.parse(localStorage.getItem('tinywins')||'{}');
-    let txt=`🌤️ Tiny Wins\n日期: ${new Date().toLocaleDateString()}\n\n`;
-    txt+="✅ 今日小事:\n"+(data.tasks||[]).map((t,i)=>`${i+1}. ${t}`).join("\n")+"\n\n";
-    txt+=`🌈 心情指数: ${data.mood||"-"}\n\n`;
-    txt+=`💌 感恩:\n${data.gratitude||"-"}\n\n`;
-    txt+=`📊 已累计记录 ${data.days||0} 天\n`;
-    const blob=new Blob([txt],{type:"text/plain"});
-    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="tinywins.txt"; a.click();
-  }
+        function deleteMood(id) {
+            appData.moods = appData.moods.filter(m => m.id !== id);
+            saveData();
+            renderMoods();
+        }
 
-  const confetti=document.getElementById("confetti"),ctx=confetti.getContext("2d");
-  function resize(){ confetti.width=innerWidth; confetti.height=innerHeight; }
-  addEventListener('resize', resize); resize();
+        function renderMoods() {
+            const moodList = document.getElementById('moodList');
+            moodList.innerHTML = '';
+            
+            appData.moods.slice().reverse().forEach(mood => {
+                const moodElement = document.createElement('div');
+                moodElement.className = 'item';
+                moodElement.innerHTML = `
+                    <div>
+                        <span style="font-size: 1.5rem">${mood.mood}</span>
+                        <span style="margin-left: 10px">${mood.note || '无备注'}</span>
+                        <small style="color: #666; display: block">${mood.date} ${mood.time}</small>
+                    </div>
+                    <button class="btn btn-danger" onclick="deleteMood(${mood.id})">删除</button>
+                `;
+                moodList.appendChild(moodElement);
+            });
+        }
 
-  function launchConfetti(){
-    let pieces=[]; for(let i=0;i<150;i++){ pieces.push({x:Math.random()*confetti.width,y:-Math.random()*confetti.height,w:10,h:10,color:`hsl(${Math.random()*360},100%,50%)`,speed:Math.random()*3+2}); }
-    (function tick(){ ctx.clearRect(0,0,confetti.width,confetti.height); pieces.forEach(p=>{ p.y+=p.speed; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.w,p.h); }); pieces=pieces.filter(p=>p.y<confetti.height); if(pieces.length) requestAnimationFrame(tick); })();
-  }
+        // 感恩记录
+        function addGratitude() {
+            const input = document.getElementById('gratitudeInput');
+            const gratitude = input.value.trim();
+            if (gratitude) {
+                const gratitudeObj = {
+                    id: Date.now(),
+                    text: gratitude,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                };
+                appData.gratitudes.push(gratitudeObj);
+                input.value = '';
+                saveData();
+                renderGratitudes();
+            }
+        }
 
-  loadData();
-})();
-</script>
+        function deleteGratitude(id) {
+            appData.gratitudes = appData.gratitudes.filter(g => g.id !== id);
+            saveData();
+            renderGratitudes();
+        }
+
+        function renderGratitudes() {
+            const gratitudeList = document.getElementById('gratitudeList');
+            gratitudeList.innerHTML = '';
+            
+            appData.gratitudes.slice().reverse().forEach(gratitude => {
+                const gratitudeElement = document.createElement('div');
+                gratitudeElement.className = 'item';
+                gratitudeElement.innerHTML = `
+                    <div>
+                        <span>🙏 ${gratitude.text}</span>
+                        <small style="color: #666; display: block">${gratitude.date} ${gratitude.time}</small>
+                    </div>
+                    <button class="btn btn-danger" onclick="deleteGratitude(${gratitude.id})">删除</button>
+                `;
+                gratitudeList.appendChild(gratitudeElement);
+            });
+        }
+
+        // 彩带特效
+        function createConfetti() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // 统计数据
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = appData.completedTasks;
+            document.getElementById('totalMoods').textContent = appData.moods.length;
+            document.getElementById('totalGratitudes').textContent = appData.gratitudes.length;
+            
+            // 计算活跃天数
+            const allDates = new Set();
+            appData.tasks.forEach(task => allDates.add(task.date));
+            appData.moods.forEach(mood => allDates.add(mood.date));
+            appData.gratitudes.forEach(gratitude => allDates.add(gratitude.date));
+            document.getElementById('activeDays').textContent = allDates.size;
+            
+            // 显示最近活动
+            const recentActivity = document.getElementById('recentActivity');
+            const recent = [];
+            
+            appData.tasks.slice(-5).forEach(task => {
+                recent.push(`📝 ${task.completed ? '完成' : '添加'}任务: ${task.text}`);
+            });
+            appData.moods.slice(-3).forEach(mood => {
+                recent.push(`😊 记录心情: ${mood.mood} ${mood.note ? '- ' + mood.note : ''}`);
+            });
+            appData.gratitudes.slice(-3).forEach(gratitude => {
+                recent.push(`🙏 感恩记录: ${gratitude.text}`);
+            });
+            
+            recentActivity.innerHTML = recent.slice(-8).map(item => 
+                `<div class="item"><span>${item}</span></div>`
+            ).join('');
+        }
+
+        // 数据导出
+        function exportData() {
+            let exportText = '=== Tiny Wins 数据导出 ===\n';
+            exportText += `导出时间: ${new Date().toLocaleString()}\n\n`;
+            
+            exportText += '【任务清单】\n';
+            appData.tasks.forEach(task => {
+                exportText += `${task.completed ? '✅' : '⭕'} ${task.text} (${task.date})\n`;
+            });
+            
+            exportText += '\n【心情记录】\n';
+            appData.moods.forEach(mood => {
+                exportText += `${mood.mood} ${mood.note || ''} (${mood.date} ${mood.time})\n`;
+            });
+            
+            exportText += '\n【感恩日记】\n';
+            appData.gratitudes.forEach(gratitude => {
+                exportText += `🙏 ${gratitude.text} (${gratitude.date} ${gratitude.time})\n`;
+            });
+            
+            downloadFile(exportText, 'tiny-wins-data.txt');
+        }
+
+        function exportJSON() {
+            const jsonData = JSON.stringify(appData, null, 2);
+            downloadFile(jsonData, 'tiny-wins-data.json');
+        }
+
+        function downloadFile(content, filename) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function resetData() {
+            if (confirm('确定要重置所有数据吗？这个操作无法撤销！')) {
+                appData = {
+                    tasks: [],
+                    moods: [],
+                    gratitudes: [],
+                    completedTasks: 0
+                };
+                saveData();
+                renderTasks();
+                renderMoods();
+                renderGratitudes();
+                updateStats();
+                alert('数据已重置！');
+            }
+        }
+
+        // 回车键添加任务
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            renderTasks();
+            renderMoods();
+            renderGratitudes();
+            updateStats();
+        });
+    </script>
 </body>
 </html>
