@@ -18,6 +18,8 @@
             background: linear-gradient(135deg, #E8F8F5 0%, #D5F2EA 50%, #C3E9DD 100%);
             min-height: 100vh;
             color: #2C5530;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -34,6 +36,12 @@
             border-radius: 20px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(76, 205, 196, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .header:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(76, 205, 196, 0.2);
         }
 
         .profile-image {
@@ -48,6 +56,13 @@
             font-size: 48px;
             color: white;
             box-shadow: 0 10px 30px rgba(76, 205, 196, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(76, 205, 196, 0.4);
         }
 
         h1 {
@@ -78,9 +93,21 @@
             color: #2C5530;
             border-radius: 25px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 16px;
             font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .tab-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 205, 196, 0.3);
         }
 
         .tab-button.active {
@@ -90,12 +117,78 @@
             box-shadow: 0 5px 15px rgba(76, 205, 196, 0.3);
         }
 
+        .tab-button:active {
+            transform: translateY(1px);
+        }
+
         .tab-content {
             display: none;
         }
 
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tab-button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 无障碍优化 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .section {
