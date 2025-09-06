@@ -1,0 +1,35 @@
+<view class="page-container">
+  <!-- 今日日期显示 -->
+  <view class="date-section">
+    <text class="date">{{currentDate}}</text>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="tasks-container">
+    <view class="task-heading">
+      <text class="heading-text">⚠️ 今日必做三件事</text>
+    </view>
+    
+    <!-- 任务列表 -->
+    <view class="tasks-list">
+      <block wx:for="{{tasks}}" wx:key="id">
+        <view class="task-item {{item.completed ? 'completed' : ''}}">
+          <view class="task-checkbox" bindtap="toggleTask" data-id="{{item.id}}">
+            <view class="checkbox {{item.completed ? 'checked' : ''}}">
+              <text wx:if="{{item.completed}}" class="check-icon">✓</text>
+            </view>
+          </view>
+          <view class="task-content" bindtap="editTask" data-id="{{item.id}}">
+            <text class="task-text">{{item.content || '点击添加任务'}}</text>
+            <text class="task-time" wx:if="{{item.time}}">{{item.time}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 激励语 -->
+  <view class="motivation-section">
+    <text class="motivation-text">{{motivationText}}</text>
+  </view>
+</view>

@@ -1,0 +1,41 @@
+<!--pages/achievements/index.wxml-->
+<view class="container">
+  <!-- 用户信息区域 -->
+  <view class="user-section">
+    <view class="user-info">
+      <image class="avatar" src="{{userInfo.avatarUrl || 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'}}" mode="aspectFill"></image>
+      <view class="user-details">
+        <text class="nickname">{{userInfo.nickName || '点击登录'}}</text>
+        <text class="user-stats">已解锁 {{unlockedCount}} 个成就</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 成就展示区域 -->
+  <view class="section achievements-section">
+    <view class="section-header">
+      <view class="title">🏆 我的成就</view>
+    </view>
+    <view class="achievement-grid">
+      <block wx:for="{{achievements}}" wx:key="id">
+        <view class="achievement-card {{item.unlocked ? 'unlocked' : 'locked'}}">
+          <view class="achievement-icon">{{item.icon}}</view>
+          <view class="achievement-title">{{item.title}}</view>
+          <view class="achievement-desc">{{item.description}}</view>
+					<view class="achievement-progress">
+						<view class="achievement-progress-fill" style="width:{{item.progress}}%"></view>
+					</view>
+					<view wx:if="{{item.unlocked}}" class="unlocked-label">✅ 已解锁</view>
+				</view>
+			</block>
+		</view>
+	</view>
+  
+  <!-- 导出数据按钮 -->
+  <view class="export-section">
+    <view class="export-btn" bindtap="exportData">
+      <text class="export-icon">📤</text>
+      <text>导出数据</text>
+    </view>
+  </view>
+</view>

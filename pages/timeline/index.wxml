@@ -1,0 +1,83 @@
+<view class="container">
+  <!-- 日期选择器 -->
+  <view class="date-picker">
+    <picker mode="date" value="{{currentDate}}" start="2020-01-01" end="2030-12-31" bindchange="onDateChange">
+      <view class="picker-content">
+        <text class="date-text">{{formattedDate}}</text>
+        <text class="iconfont icon-calendar"></text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 时间线列表 -->
+  <view class="timeline-list">
+    <block wx:if="{{timelineItems.length > 0}}">
+      <view class="timeline-item" wx:for="{{timelineItems}}" wx:key="id">
+        <view class="time-column">
+          <text class="time-text">{{item.time}}</text>
+        </view>
+        <view class="content-column">
+          <view class="content-card {{item.completed ? 'completed' : ''}}">
+            <view class="event-header">
+              <text class="event-icon">{{item.icon}}</text>
+              <text class="event-type">{{item.typeName}}</text>
+            </view>
+            <view class="event-content">{{item.content}}</view>
+            <view class="event-actions">
+              <view class="action-btn {{item.completed ? 'completed' : ''}}" bindtap="toggleComplete" data-id="{{item.id}}">
+                {{item.completed ? '已完成' : '完成'}}
+              </view>
+              <view class="action-btn delete" bindtap="deleteEvent" data-id="{{item.id}}">删除</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="empty-state">
+      <image class="empty-image" src="/assets/images/empty-timeline.png" mode="aspectFit"></image>
+      <text class="empty-text">今天还没有安排哦</text>
+    </view>
+  </view>
+
+  <!-- 添加事项按钮 -->
+  <view class="add-button" bindtap="showAddModal">
+    <text class="iconfont icon-add"></text>
+  </view>
+
+  <!-- 添加事项弹窗 -->
+  <view class="modal" wx:if="{{showModal}}">
+    <view class="modal-mask" bindtap="hideModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">添加时间线事项</text>
+      </view>
+      <view class="modal-body">
+        <picker mode="time" value="{{newEvent.time}}" bindchange="onTimeChange">
+          <view class="input-group">
+            <text class="label">时间</text>
+            <view class="picker">{{newEvent.time || '请选择时间'}}</view>
+          </view>
+        </picker>
+        <picker bindchange="onTypeChange" value="{{newEvent.typeIndex}}" range="{{eventTypes}}" range-key="name">
+          <view class="input-group">
+            <text class="label">类型</text>
+            <view class="picker">{{eventTypes[newEvent.typeIndex].name || '请选择类型'}}</view>
+          </view>
+        </picker>
+        <view class="input-group">
+          <text class="label">内容</text>
+          <input class="input" placeholder="请输入事项内容" value="{{newEvent.content}}" bindinput="onContentInput"/>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn cancel" bindtap="hideModal">取消</button>
+        <button class="btn confirm" bindtap="addEvent">确定</button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="showTimeModal">
+    <text class="add-icon">+</text>
+  </view>
+</view>

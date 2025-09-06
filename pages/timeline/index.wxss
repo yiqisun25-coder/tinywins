@@ -1,0 +1,299 @@
+.container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding-bottom: 120rpx;
+}
+
+/* 日期选择器样式 */
+.date-picker {
+  padding: 30rpx;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.picker-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 600;
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.date-text {
+  margin-right: 10rpx;
+}
+
+/* 时间线列表样式 */
+.timeline-list {
+  padding: 30rpx;
+}
+
+.timeline-item {
+  display: flex;
+  margin-bottom: 30rpx;
+}
+
+.time-column {
+  width: 120rpx;
+  text-align: center;
+  padding-top: 20rpx;
+}
+
+.time-text {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.content-column {
+  flex: 1;
+  margin-left: 30rpx;
+  position: relative;
+}
+
+.content-column::before {
+  content: '';
+  position: absolute;
+  left: -15rpx;
+  top: 30rpx;
+  width: 2rpx;
+  height: calc(100% + 30rpx);
+  background: #eee;
+}
+
+.timeline-item:last-child .content-column::before {
+  display: none;
+}
+
+.content-card {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.content-card.completed {
+  opacity: 0.7;
+}
+
+.event-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.event-icon {
+  font-size: 36rpx;
+  margin-right: 10rpx;
+}
+
+.event-type {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.event-content {
+  font-size: 30rpx;
+  color: #333;
+  margin: 10rpx 0;
+  word-break: break-all;
+}
+
+.event-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+}
+
+.action-btn {
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  color: #4ECDC4;
+  border: 1px solid #4ECDC4;
+  border-radius: 30rpx;
+  margin-left: 20rpx;
+}
+
+.action-btn.completed {
+  background: #4ECDC4;
+  color: #fff;
+}
+
+.action-btn.delete {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+/* 空状态样式 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400rpx;
+  padding: 60rpx 0;
+  text-align: center;
+}
+
+.empty-image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  text-align: center;
+  width: 100%;
+}
+
+/* 添加按钮样式 */
+.add-button {
+  position: fixed;
+  right: 40rpx;
+  bottom: 40rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: #4ECDC4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(78, 205, 196, 0.3);
+}
+
+.add-button .icon-add {
+  font-size: 48rpx;
+  color: #fff;
+}
+
+/* 弹窗样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 20rpx 20rpx 0 0;
+  padding: 30rpx;
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-body {
+  margin-bottom: 30rpx;
+}
+
+.input-group {
+  margin-bottom: 20rpx;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  height: 80rpx;
+  background: #f8f9fa;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+}
+
+.picker {
+  width: 100%;
+  height: 80rpx;
+  background: #f8f9fa;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  line-height: 80rpx;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  font-size: 30rpx;
+  margin: 0 10rpx;
+}
+
+.cancel {
+  background: #f8f9fa;
+  color: #666;
+}
+
+.confirm {
+  background: #4ECDC4;
+  color: #fff;
+}
+
+/* 添加按钮 */
+.add-btn {
+  position: fixed;
+  right: 40rpx;
+  bottom: 40rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: #4ECDC4;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 16rpx rgba(76,205,196,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.add-icon {
+  color: #fff;
+  font-size: 60rpx;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+}

@@ -1,0 +1,54 @@
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding: 40rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20rpx;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8rpx 32rpx rgba(76, 205, 196, 0.1);
+}
+
+.profile-image {
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto 20rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.nickname {
+  font-size: 36rpx;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  padding: 20rpx 40rpx;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text-color);
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  transition: all 0.3s;
+}
+
+.tab-button.active {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2rpx);
+  box-shadow: 0 10rpx 30rpx rgba(76, 205, 196, 0.3);
+}
+
+.content {
+  padding: 20rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20rpx;
+  min-height: 400rpx;
+}

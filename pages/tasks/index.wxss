@@ -1,0 +1,111 @@
+.page-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 32rpx;
+}
+
+/* 日期部分样式 */
+.date-section {
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+.date {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: 600;
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 任务列表样式 */
+.tasks-container {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 40rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.task-heading {
+  margin-bottom: 32rpx;
+}
+
+.heading-text {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.tasks-list {
+  margin-bottom: 32rpx;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-checkbox {
+  margin-right: 24rpx;
+}
+
+.checkbox {
+  width: 40rpx;
+  height: 40rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox.checked {
+  background: #4ECDC4;
+  border-color: #4ECDC4;
+}
+
+.check-icon {
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-text {
+  font-size: 32rpx;
+  color: #333;
+  line-height: 1.5;
+}
+
+.task-item.completed .task-text {
+  color: #999;
+  text-decoration: line-through;
+}
+
+.task-time {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+/* 激励语部分样式 */
+.motivation-section {
+  text-align: center;
+  padding: 32rpx;
+}
+
+.motivation-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  font-style: italic;
+}

@@ -1,0 +1,99 @@
+<view class="page-container">
+  <!-- 顶部搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input">
+      <text class="iconfont icon-search"></text>
+      <input placeholder="搜索成就..." bindinput="onSearchInput" />
+    </view>
+    <view class="filter-btn" bindtap="showFilterOptions">
+      <text class="iconfont icon-filter"></text>
+    </view>
+  </view>
+
+  <!-- 头部卡片 -->
+  <view class="header-card">
+    <view class="user-info">
+      <view class="avatar-container">
+        <open-data type="userAvatarUrl"></open-data>
+        <view class="streak-badge" wx:if="{{streakCount > 0}}">
+          🔥 {{streakCount}}
+        </view>
+      </view>
+      <view class="user-details">
+        <open-data type="userNickName" class="nickname"></open-data>
+        <text class="motto">{{motto || '记录每一个进步'}}</text>
+      </view>
+    </view>
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-number">{{todayCount}}</text>
+        <text class="stat-label">今日</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{weekCount}}</text>
+        <text class="stat-label">本周</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{totalCount}}</text>
+        <text class="stat-label">总计</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类标签滚动条 -->
+  <scroll-view class="category-scroll" scroll-x="true">
+    <view class="category-tags">
+      <view class="category-tag {{selectedCategory === 'all' ? 'active' : ''}}" 
+            bindtap="selectCategory" data-category="all">
+        全部
+      </view>
+      <view class="category-tag {{selectedCategory === item.name ? 'active' : ''}}" 
+            wx:for="{{categories}}" 
+            wx:key="name"
+            bindtap="selectCategory"
+            data-category="{{item.name}}"
+            style="{{selectedCategory === item.name ? 'background: ' + item.color : ''}}">
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 成就列表 -->
+  <scroll-view class="achievements-list" scroll-y="true" bindscrolltolower="loadMore">
+    <block wx:if="{{filteredAchievements.length > 0}}">
+      <view class="achievement-card" 
+            wx:for="{{filteredAchievements}}" 
+            wx:key="_id"
+            bindtap="showAchievementDetail"
+            data-id="{{item._id}}">
+        <view class="achievement-header">
+          <text class="achievement-date">{{item.createTime}}</text>
+          <view class="achievement-category" style="background: {{item.categoryColor}}">
+            {{item.category}}
+          </view>
+        </view>
+        <view class="achievement-content">
+          <text class="achievement-title">{{item.title}}</text>
+          <text class="achievement-desc" wx:if="{{item.description}}">{{item.description}}</text>
+        </view>
+        <view class="achievement-footer">
+          <view class="action-buttons">
+            <view class="action-btn like {{item.isLiked ? 'active' : ''}}" 
+                  catchtap="toggleLike" 
+                  data-id="{{item._id}}">
+              <text class="iconfont {{item.isLiked ? 'icon-heart-filled' : 'icon-heart'}}"></text>
+              <text>{{item.likes || 0}}</text>
+            </view>
+            <view class="action-btn" catchtap="shareAchievement" data-id="{{item._id}}">
+              <text class="iconfont icon-share"></text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="empty-state">
+      <image src="/images/empty.png" mode="aspectFit"></image>
+      <text>还没有记录成就，开始添加吧！</text>
+    </view>
+  </scroll-view>
+</view>

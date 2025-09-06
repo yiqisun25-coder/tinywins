@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="header">
+    <view class="profile-image">
+      <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <view class="user-info">
+      <open-data type="userNickName" class="nickname"></open-data>
+    </view>
+  </view>
+  
+  <view class="nav-tabs">
+    <view 
+      wx:for="{{tabs}}" 
+      wx:key="id"
+      class="tab-button {{currentTab === index ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-index="{{index}}"
+    >
+      {{item.name}}
+    </view>
+  </view>
+
+  <view class="content">
+    <view class="tab-content" hidden="{{currentTab !== 0}}">
+      <!-- 第一个标签页内容 -->
+    </view>
+    <view class="tab-content" hidden="{{currentTab !== 1}}">
+      <!-- 第二个标签页内容 -->
+    </view>
+  </view>
+</view>

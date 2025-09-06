@@ -1,0 +1,69 @@
+
+.container {
+	padding: 24rpx;
+}
+.section {
+	background: #fff;
+	border-radius: 20rpx;
+	padding: 32rpx 24rpx;
+	box-shadow: 0 8rpx 32rpx rgba(76,205,196,0.08);
+}
+.title {
+	font-size: 36rpx;
+	color: #2C5530;
+	font-weight: bold;
+	margin-bottom: 24rpx;
+}
+.input-group {
+	margin-bottom: 24rpx;
+}
+.gratitude-input {
+	width: 100%;
+	min-height: 80rpx;
+	border: 2rpx solid #4ECDC4;
+	border-radius: 12rpx;
+	padding: 16rpx;
+	font-size: 28rpx;
+	margin-bottom: 12rpx;
+}
+button.btn {
+	color: #fff;
+	border-radius: 12rpx;
+	padding: 16rpx 32rpx;
+	font-size: 28rpx;
+	margin: 0;
+	line-height: 1.5;
+}
+
+.btn-primary {
+	background: #4ECDC4;
+	color: #fff;
+	border-radius: 12rpx;
+	padding: 16rpx 32rpx;
+	font-size: 28rpx;
+}
+.btn-danger {
+	background: #FF6B6B;
+}
+.gratitude-list {
+	margin-top: 16rpx;
+}
+.item {
+	background: #f8f8f8;
+	border-radius: 12rpx;
+	padding: 20rpx;
+	margin-bottom: 16rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.date {
+	color: #888;
+	font-size: 24rpx;
+	margin-left: 12rpx;
+}
+.empty {
+	text-align: center;
+	color: #aaa;
+	padding: 40rpx 0;
+}

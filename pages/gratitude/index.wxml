@@ -1,0 +1,22 @@
+<!--pages/gratitude/index.wxml-->
+<view class="container">
+	<view class="section">
+		<view class="title">🪄 今日感恩什么</view>
+		<view class="input-group">
+			<textarea class="gratitude-input" placeholder="记录今天值得感恩的事情..." auto-height="true" model:value="{{inputValue}}" bindinput="onInput" />
+			<button class="btn btn-primary" bindtap="addGratitude">添加感恩</button>
+		</view>
+		<view class="gratitude-list">
+			<block wx:for="{{gratitudeList}}" wx:key="id">
+				<view class="item">
+					<view>
+						<text>🙏 {{item.text}}</text>
+						<text class="date">{{item.date}} {{item.time}}</text>
+					</view>
+					<button class="btn btn-danger" bindtap="deleteGratitude" data-id="{{item.id}}">删除</button>
+				</view>
+			</block>
+			<view wx:if="{{gratitudeList.length === 0}}" class="empty">今天还没有感恩记录，快来添加吧！</view>
+		</view>
+	</view>
+</view>

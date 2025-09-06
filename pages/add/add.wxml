@@ -1,0 +1,24 @@
+<view class="container">
+  <form bindsubmit="handleSubmit">
+    <view class="form-group">
+      <view class="label">成就标题</view>
+      <input class="input" name="title" placeholder="请输入您的成就" />
+    </view>
+
+    <view class="form-group">
+      <view class="label">类别</view>
+      <picker mode="selector" range="{{categories}}" range-key="name" bindchange="handleCategoryChange">
+        <view class="picker">
+          {{selectedCategory ? selectedCategory.name : '请选择类别'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-group">
+      <view class="label">描述 (选填)</view>
+      <textarea class="textarea" name="description" placeholder="添加更多细节..." />
+    </view>
+
+    <button class="submit-btn" form-type="submit">保存成就</button>
+  </form>
+</view>

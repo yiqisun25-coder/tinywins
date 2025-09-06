@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/tasks/index",
+    "pages/timeline/index",
+    "pages/gratitude/index",
+    "pages/achievements/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4ECDC4",
+    "navigationBarTitleText": "Tiny Wins",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "custom": false,
+    "color": "#999999",
+    "selectedColor": "#4ECDC4",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/tasks/index",
+        "text": "三件事",
+        "iconPath": "./assets/tabbar/tasks.png",
+        "selectedIconPath": "./assets/tabbar/tasks-active.png"
+      },
+      {
+        "pagePath": "pages/timeline/index",
+        "text": "时间线",
+        "iconPath": "./assets/tabbar/timeline.png",
+        "selectedIconPath": "./assets/tabbar/timeline-active.png"
+      },
+      {
+        "pagePath": "pages/gratitude/index",
+        "text": "感恩",
+        "iconPath": "./assets/tabbar/gratitude.png",
+        "selectedIconPath": "./assets/tabbar/gratitude-active.png"
+      },
+      {
+        "pagePath": "pages/achievements/index",
+        "text": "成就",
+        "iconPath": "./assets/tabbar/achievements.png",
+        "selectedIconPath": "./assets/tabbar/achievements-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
