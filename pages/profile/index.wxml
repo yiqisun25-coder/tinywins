@@ -1,0 +1,21 @@
+<!-- pages/profile/index.wxml -->
+<view class="profile-container">
+  <!-- 成就徽章区域 -->
+  <view class="achievements-section">
+    <view class="section-title">成就系统</view>
+    <block wx:if="{{loading}}">
+      <view class="loading">加载中...</view>
+    </block>
+    <block wx:else>
+      <view class="badges-grid">
+        <view class="badge-item {{badge.unlocked ? 'unlocked' : ''}}" 
+              wx:for="{{badges}}" 
+              wx:key="id" 
+              wx:for-item="badge">
+          <text class="badge-name">{{badge.name}}</text>
+          <text class="badge-progress">{{badge.progress || 0}}/{{badge.target}}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

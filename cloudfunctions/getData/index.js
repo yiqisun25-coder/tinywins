@@ -27,6 +27,23 @@ exports.main = async (event, context) => {
           .orderBy('createTime', 'desc')
           .get()
       
+      case 'stats':
+        const stats = await db.collection('user_stats')
+          .where({
+            _openid: wxContext.OPENID
+          })
+          .get()
+        
+        // 如果没有找到用户数据，返回默认值
+        if (!stats.data || stats.data.length === 0) {
+          return {
+            completedTasks: 0,
+            goals: [],
+            streak: 0
+          }
+        }
+        return stats.data[0]
+      
       default:
         return {
           error: 'Invalid type'

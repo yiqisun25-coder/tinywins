@@ -74,7 +74,7 @@
   position: absolute;
   bottom: -10rpx;
   right: -10rpx;
-  background: #FF6B6B;
+  background: #4A90E2;
   color: white;
   font-size: 24rpx;
   padding: 6rpx 12rpx;
@@ -220,7 +220,7 @@
 }
 
 .action-btn.like.active {
-  color: #FF6B6B;
+  color: #4A90E2;
 }
 
 .action-btn .iconfont {

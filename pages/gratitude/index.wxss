@@ -43,7 +43,7 @@ button.btn {
 	font-size: 28rpx;
 }
 .btn-danger {
-	background: #FF6B6B;
+	background: #4A90E2;
 }
 .gratitude-list {
 	margin-top: 16rpx;

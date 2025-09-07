@@ -1,17 +1,39 @@
 <view class="page-container">
-  <!-- 今日日期显示 -->
+  <!-- 日期选择器 -->
   <view class="date-section">
-    <text class="date">{{currentDate}}</text>
+    <picker mode="date" value="{{currentDate}}" bindchange="onDateChange">
+      <view class="date-picker">
+        <text class="date">{{formattedDate}}</text>
+        <text class="date-arrow">▼</text>
+      </view>
+    </picker>
   </view>
 
-  <!-- 任务列表 -->
-  <view class="tasks-container">
-    <view class="task-heading">
-      <text class="heading-text">⚠️ 今日必做三件事</text>
+  <!-- 标签页切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'tasks' ? 'active' : ''}}" 
+          bindtap="switchTab" 
+          data-tab="tasks">
+      今日事项
     </view>
-    
-    <!-- 任务列表 -->
+    <view class="tab-item {{activeTab === 'timeline' ? 'active' : ''}}" 
+          bindtap="switchTab" 
+          data-tab="timeline">
+      时间线
+    </view>
+  </view>
+
+  <!-- 任务列表部分 -->
+  <view class="tasks-container" wx:if="{{activeTab === 'tasks'}}">
+    <!-- 重要且紧急的任务 -->
     <view class="tasks-list">
+      <view class="task-heading">
+        <view class="heading-main">
+          <text class="heading-text">⚠️ 今日必做三件事</text>
+        </view>
+        <view class="heading-sub">Important + Urgent</view>
+      </view>
+      
       <block wx:for="{{tasks}}" wx:key="id">
         <view class="task-item {{item.completed ? 'completed' : ''}}">
           <view class="task-checkbox" bindtap="toggleTask" data-id="{{item.id}}">
@@ -21,15 +43,109 @@
           </view>
           <view class="task-content" bindtap="editTask" data-id="{{item.id}}">
             <text class="task-text">{{item.content || '点击添加任务'}}</text>
-            <text class="task-time" wx:if="{{item.time}}">{{item.time}}</text>
+            <view class="task-meta" wx:if="{{item.time || item.goalId}}">
+              <text class="task-time" wx:if="{{item.time}}">🕐 {{item.time}}</text>
+              <text class="goal-tag" wx:if="{{item.goalId}}">
+                <block wx:for="{{goals}}" wx:key="id" wx:for-item="section">
+                  <block wx:for="{{section.items}}" wx:key="id" wx:for-item="goal">
+                    <block wx:if="{{goal.id === item.goalId}}">
+                      🎯 {{section.title}} - {{goal.content}}
+                    </block>
+                  </block>
+                </block>
+              </text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 不重要不紧急的事 -->
+    <view class="unimportant-list">
+      <view class="task-heading">
+        <view class="heading-main">
+          <text class="heading-text">😴 今日可延后的事</text>
+        </view>
+        <view class="heading-sub">Not Important + Not Urgent</view>
+      </view>
+      
+      <block wx:for="{{unimportantTasks}}" wx:key="id">
+        <view class="task-item unimportant {{item.completed ? 'completed' : ''}}">
+          <view class="task-checkbox" bindtap="toggleUnimportantTask" data-id="{{item.id}}">
+            <view class="checkbox {{item.completed ? 'checked' : ''}}">
+              <text wx:if="{{item.completed}}" class="check-icon">✓</text>
+            </view>
+          </view>
+          <view class="task-content" bindtap="editUnimportantTask" data-id="{{item.id}}">
+            <text class="task-text">{{item.content || '点击添加不紧急不重要的事'}}</text>
           </view>
         </view>
       </block>
     </view>
   </view>
 
-  <!-- 激励语 -->
-  <view class="motivation-section">
-    <text class="motivation-text">{{motivationText}}</text>
+  <!-- 时间线部分 -->
+  <view class="timeline-container" wx:if="{{activeTab === 'timeline'}}">
+    <view class="add-event" bindtap="showTimeModal">
+      <image class="add-icon" src="/assets/tabbar/add.png" mode="aspectFit"/>
+      <text>添加新事项</text>
+    </view>
+
+    <view class="timeline">
+      <block wx:for="{{timelineItems}}" wx:key="id">
+        <view class="timeline-item {{item.completed ? 'completed' : ''}}">
+          <view class="time-column">
+            <text class="time">{{item.time}}</text>
+          </view>
+          <view class="content-column">
+            <view class="content-main">
+              <view class="event-icon" bindtap="toggleComplete" data-id="{{item.id}}">{{item.icon}}</view>
+              <view class="event-content">
+                <text class="event-text">{{item.content}}</text>
+                <text class="event-type">{{item.typeName}}</text>
+              </view>
+            </view>
+            <view class="delete-btn" catchtap="deleteTimelineItem" data-id="{{item.id}}">删除</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 添加事项模态框 -->
+  <view class="modal" wx:if="{{showModal}}">
+    <view class="modal-mask" bindtap="hideModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text>添加新事项</text>
+      </view>
+      <view class="modal-body">
+        <picker mode="time" value="{{newEvent.time}}" bindchange="onTimeChange">
+          <view class="form-item">
+            <text class="label">时间</text>
+            <text class="value">{{newEvent.time}}</text>
+          </view>
+        </picker>
+        
+        <picker value="{{newEvent.typeIndex}}" range="{{eventTypes}}" range-key="name" bindchange="onTypeChange">
+          <view class="form-item">
+            <text class="label">类型</text>
+            <text class="value">{{eventTypes[newEvent.typeIndex].icon}} {{eventTypes[newEvent.typeIndex].name}}</text>
+          </view>
+        </picker>
+
+        <view class="form-item">
+          <text class="label">内容</text>
+          <input class="input" 
+                 value="{{newEvent.content}}" 
+                 bindinput="onContentInput" 
+                 placeholder="输入事项内容"/>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn cancel" bindtap="hideModal">取消</button>
+        <button class="btn confirm" bindtap="addEvent">确定</button>
+      </view>
+    </view>
   </view>
 </view>

@@ -1,0 +1,31 @@
+<!--pages/goals/index.wxml-->
+<view class="container">
+  <block wx:for="{{goals}}" wx:key="id">
+    <view class="goal-section">
+      <view class="section-header">
+        <text class="section-title">{{item.title}}</text>
+        <view class="add-btn" bindtap="addGoalItem" data-section-id="{{item.id}}">
+          <text class="add-icon">+</text>
+        </view>
+      </view>
+      
+      <view class="goals-list">
+        <block wx:if="{{item.items.length > 0}}">
+          <view class="goal-item" wx:for="{{item.items}}" wx:key="id" wx:for-item="goal">
+            <view class="goal-main">
+              <view class="goal-content" bindtap="editProgress" data-section-id="{{item.id}}" data-goal-id="{{goal.id}}">{{goal.content}}</view>
+              <view class="goal-progress">
+                <view class="progress-bar">
+                  <view class="progress-fill" style="width: {{goal.progress}}%"></view>
+                </view>
+                <text class="progress-text">{{goal.progress}}%</text>
+              </view>
+            </view>
+            <view class="delete-btn" catchtap="deleteGoalItem" data-section-id="{{item.id}}" data-goal-id="{{goal.id}}">删除</view>
+          </view>
+        </block>
+        <view wx:else class="empty-tip">点击 + 添加{{item.title}}</view>
+      </view>
+    </view>
+  </block>
+</view>
