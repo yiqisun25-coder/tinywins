@@ -89,21 +89,32 @@ Page({
     this.loadTasks()
   },
 
-  deleteTask: function(e) {
+  clearTask: function(e) {
     const { id } = e.currentTarget.dataset
     const tasksKey = `tasks_${this.data.currentDate}`
     
     wx.showModal({
-      title: '删除任务',
-      content: '确定要删除这个任务吗？',
+      title: '清空任务',
+      content: '确定要清空这个任务吗？',
       success: (res) => {
         if (res.confirm) {
-          const tasks = this.data.tasks.filter(task => task.id !== id)
+          const tasks = this.data.tasks.map(task => {
+            if (task.id === id) {
+              return {
+                ...task,
+                content: '',
+                completed: false,
+                time: '',
+                goalId: null
+              }
+            }
+            return task
+          })
           this.setData({ tasks })
           wx.setStorageSync(tasksKey, tasks)
           
           wx.showToast({
-            title: '已删除',
+            title: '已清空',
             icon: 'success'
           })
         }
@@ -111,21 +122,30 @@ Page({
     })
   },
 
-  deleteUnimportantTask: function(e) {
+  clearUnimportantTask: function(e) {
     const { id } = e.currentTarget.dataset
     const unimportantTasksKey = `unimportantTasks_${this.data.currentDate}`
     
     wx.showModal({
-      title: '删除任务',
-      content: '确定要删除这个任务吗？',
+      title: '清空任务',
+      content: '确定要清空这个任务吗？',
       success: (res) => {
         if (res.confirm) {
-          const unimportantTasks = this.data.unimportantTasks.filter(task => task.id !== id)
+          const unimportantTasks = this.data.unimportantTasks.map(task => {
+            if (task.id === id) {
+              return {
+                ...task,
+                content: '',
+                completed: false
+              }
+            }
+            return task
+          })
           this.setData({ unimportantTasks })
           wx.setStorageSync(unimportantTasksKey, unimportantTasks)
           
           wx.showToast({
-            title: '已删除',
+            title: '已清空',
             icon: 'success'
           })
         }
@@ -160,15 +180,31 @@ Page({
     const tasksKey = `tasks_${this.data.currentDate}`
     const unimportantTasksKey = `unimportantTasks_${this.data.currentDate}`
     
-    const tasks = wx.getStorageSync(tasksKey) || [
-      { id: 1, content: '', completed: false, time: '', goalId: null },
-      { id: 2, content: '', completed: false, time: '', goalId: null },
-      { id: 3, content: '', completed: false, time: '', goalId: null }
-    ]
-    const unimportantTasks = wx.getStorageSync(unimportantTasksKey) || [
-      { id: 1, content: '', completed: false },
-      { id: 2, content: '', completed: false }
-    ]
+    let tasks = wx.getStorageSync(tasksKey) || []
+    // 确保始终有三个重要任务
+    if (tasks.length < 3) {
+      const defaultTasks = [
+        { id: 1, content: '', completed: false, time: '', goalId: null },
+        { id: 2, content: '', completed: false, time: '', goalId: null },
+        { id: 3, content: '', completed: false, time: '', goalId: null }
+      ]
+      tasks = defaultTasks.map((defaultTask, index) => {
+        return tasks[index] || defaultTask
+      })
+    }
+    
+    let unimportantTasks = wx.getStorageSync(unimportantTasksKey) || []
+    // 确保始终有三个不重要任务
+    if (unimportantTasks.length < 3) {
+      const defaultUnimportantTasks = [
+        { id: 1, content: '', completed: false },
+        { id: 2, content: '', completed: false },
+        { id: 3, content: '', completed: false }
+      ]
+      unimportantTasks = defaultUnimportantTasks.map((defaultTask, index) => {
+        return unimportantTasks[index] || defaultTask
+      })
+    }
     
     this.setData({ 
       tasks,
@@ -217,7 +253,7 @@ Page({
     const task = this.data.tasks.find(t => t.id === id)
     
     wx.showActionSheet({
-      itemList: ['编辑内容', '设置时间', '关联目标', '删除任务'],
+      itemList: ['编辑内容', '设置时间', '关联目标', '清空任务'],
       success: (res) => {
         switch (res.tapIndex) {
           case 0:
@@ -230,7 +266,7 @@ Page({
             this.linkTaskToGoal(task)
             break
           case 3:
-            this.deleteTask({ currentTarget: { dataset: { id: task.id } } })
+            this.clearTask({ currentTarget: { dataset: { id: task.id } } })
             break
         }
       }
@@ -354,14 +390,14 @@ Page({
     const task = this.data.unimportantTasks.find(t => t.id === id)
     
     wx.showActionSheet({
-      itemList: ['编辑内容', '删除任务'],
+      itemList: ['编辑内容', '清空任务'],
       success: (res) => {
         switch (res.tapIndex) {
           case 0:
             this.editUnimportantTaskContent(task)
             break
           case 1:
-            this.deleteUnimportantTask({ currentTarget: { dataset: { id: task.id } } })
+            this.clearUnimportantTask({ currentTarget: { dataset: { id: task.id } } })
             break
         }
       }
